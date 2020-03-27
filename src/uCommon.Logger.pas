@@ -37,6 +37,9 @@ type
 
     // 7
     function GetLogLifeTime : Word; virtual;
+
+    procedure OnInitialize; virtual;
+    procedure OnFinalize; virtual;
   public
     constructor Create(const AFilePrefix : String = ''); reintroduce;
     destructor Destroy; override;
@@ -178,11 +181,13 @@ begin
     FFilePrefix := AFilePrefix;
 
   FLastOldCheck := Date;
+
+  OnInitialize;
 end;
 
 destructor TCommonLogger.Destroy;
 begin
-
+  OnFinalize;
   inherited;
 end;
 
@@ -237,6 +242,16 @@ begin
   Inc(lCount);
 
   Result := lBaseName + GetBackupFileExtension + IntToStr(lCount);
+end;
+
+procedure TCommonLogger.OnFinalize;
+begin
+//
+end;
+
+procedure TCommonLogger.OnInitialize;
+begin
+//
 end;
 
 procedure TCommonLogger.SetMaxLogSize(const Value: Word);

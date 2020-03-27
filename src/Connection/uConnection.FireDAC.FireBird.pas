@@ -12,6 +12,7 @@ uses
 type
   TConnectionFireDACFireBird = class(TConnectionFireDACBase)
   protected
+    function GetProtocol : TIBProtocol; virtual;
     function GetDriverName : string; override;
 
     function GetServer : string; override;
@@ -39,7 +40,7 @@ begin
 
   TFDPhysFBConnectionDefParams(GetConnectionObjectAsFireDAC.Params).CharacterSet := csWIN1252;
   TFDPhysFBConnectionDefParams(GetConnectionObjectAsFireDAC.Params).PageSize := ps8192;
-  TFDPhysFBConnectionDefParams(GetConnectionObjectAsFireDAC.Params).Protocol := ipTCPIP;
+  TFDPhysFBConnectionDefParams(GetConnectionObjectAsFireDAC.Params).Protocol := GetProtocol;
 end;
 
 function TConnectionFireDACFireBird.GetDatabase: string;
@@ -60,6 +61,11 @@ end;
 function TConnectionFireDACFireBird.GetPort: Integer;
 begin
   Result := TFDPhysFBConnectionDefParams(GetConnectionObjectAsFireDAC.Params).Port;
+end;
+
+function TConnectionFireDACFireBird.GetProtocol: TIBProtocol;
+begin
+  Result := ipTCPIP;
 end;
 
 function TConnectionFireDACFireBird.GetServer: string;

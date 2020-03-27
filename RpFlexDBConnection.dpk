@@ -51,6 +51,7 @@ contains
   uCommon.DBParams in 'src\uCommon.DBParams.pas',
   uCommon.Intf in 'src\uCommon.Intf.pas',
   uCommon.Logger in 'src\uCommon.Logger.pas',
-  uCommon.Memory in 'src\uCommon.Memory.pas';
+  uCommon.Memory in 'src\uCommon.Memory.pas',
+  uConnection.FireDAC.FireBird.Embedded in 'src\Connection\uConnection.FireDAC.FireBird.Embedded.pas';
 
 end.

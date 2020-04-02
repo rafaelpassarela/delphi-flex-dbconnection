@@ -5,7 +5,14 @@ interface
 uses
   uConnection.Base, uCommon.ConnectionConfig, uCommon.DBParams, Data.DB,
   System.Classes, System.SysUtils, Vcl.Forms, FireDAC.Comp.Client,
-  FireDAC.Stan.Option, FireDAC.Phys;
+  FireDAC.Stan.Option,
+//FMX: FireDAC.FMXUI.Wait
+  {$IFDEF CONSOLE}
+  FireDAC.ConsoleUI.Wait,
+  {$ELSE}
+  FireDAC.VCLUI.Wait,
+  {$ENDIF}
+  FireDAC.Phys;
 
 type
   TConnectionFireDACBase = class(TConnectionBase)
@@ -64,13 +71,17 @@ begin
 end;
 
 procedure TConnectionFireDACBase.Config(const AConfigObject : TCommonConnectionConfig);
+var
+  lDir : string;
 begin
   inherited;
 
   GetConnectionObjectAsFireDAC.DriverName := GetDriverName;
 
+  lDir := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
+
   UserName := AConfigObject.UserName;
-  Database := AConfigObject.DataBaseName;
+  Database := StringReplace(AConfigObject.DataBaseName, '.\', lDir, []);
   Password := AConfigObject.Password;
   Server := AConfigObject.ServerName;
   Port := AConfigObject.Port;

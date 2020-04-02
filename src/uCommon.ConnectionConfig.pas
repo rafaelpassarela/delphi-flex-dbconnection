@@ -9,7 +9,8 @@ type
   TConnectionEngines = (
     ceNone,
     ceMySQL,
-    ceFireBird
+    ceFireBird,
+    ceFireBirdEmbedded
   );
 
   TConnectionEnginesHelper = record helper for TConnectionEngines
@@ -90,7 +91,7 @@ end;
 
 function TCommonConnectionConfig.GetConfigName: string;
 begin
-  Result := StringReplace(ExtractFileName(Application.ExeName), '.exe', 'DbConf.json', [rfIgnoreCase]);
+  Result := StringReplace(ExtractFileName(Application.ExeName), '.exe', 'DbConfig.json', [rfIgnoreCase]);
 end;
 
 procedure TCommonConnectionConfig.Initialize;
@@ -108,8 +109,10 @@ begin
   lFileName := GetConfigDir + GetConfigName;
   if FileExists(lFileName) then
     LoadFromFile(lFileName, sfJSON)
-  else
+  else begin
     Reset;
+    SaveToFile(lFileName, sfJSON);
+  end;
 end;
 
 procedure TCommonConnectionConfig.Reset;
@@ -144,6 +147,7 @@ begin
     ceNone: Result := '';
     ceMySQL: Result := 'MySQL';
     ceFireBird: Result := 'FB';
+    ceFireBirdEmbedded: Result := 'FB'
   else
     raise Exception.Create('Egine de conexão desconhecida.');
   end;
